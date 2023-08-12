@@ -41,20 +41,24 @@ CREATE TABLE compra (
 );
 
 CREATE TABLE proveedor (
-    codigo_prov NUMBER(10) NOT NULL
+    codigo_prov VARCHAR2(2) NOT NULL 
     , razon_social VARCHAR2(20) NOT NULL
+    , cod_proveedor VARCHAR2(2) NOT NULL
+    , FOREIGN KEY(cod_proveedor) REFERENCES categoria_proveedor(codigo_cate_prov)
     , CONSTRAINT COD_PROV_ID_PK PRIMARY KEY (codigo_prov)
 );
 
 
 CREATE TABLE categoria_proveedor (
-    codigo_cate_prov NUMBER(10) NOT NULL,
-    cantidad NUMBER(10) NOT NULL,
-    facturacion NUMBER(5) NULL,
-    ventas NUMBER(5) NULL,
+    codigo_cate_prov VARCHAR2(2) NOT NULL CHECK (codigo_cate_prov IN ('AC', 'BA')),
+    calidad VARCHAR2(20) NOT NULL,
+    cantidad NUMBER(20) NOT NULL,
+    facturacion NUMBER(20) NULL,
+    ventas NUMBER(20) NULL,
     CONSTRAINT COD_CATE_PROV_PK PRIMARY KEY (codigo_cate_prov)
 );
 
+DROP TABLE categoria_proveedor;
 
 INSERT INTO CATEGORIA VALUES ('TIN','TINTOS');
 INSERT INTO CATEGORIA VALUES ('BLA','BLANCOS');
