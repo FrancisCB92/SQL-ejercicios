@@ -30,21 +30,27 @@ CREATE TABLE cliente (
     , CONSTRAINT COD_CORR_ID_PK PRIMARY KEY (codigo_corr)
 );
 
+--desaparecio la definición de la tabla pedido: ver el Object Browser. 
+
 CREATE TABLE compra (
-     codigo_vino VARCHAR2(10) NOT NULL
-    , codigo_corr VARCHAR2(15)NOT NULL 
-    , fecha DATE NOT NULL --Se declara como PK?? 
-    , cantidad NUMBER(10) NOT NULL 
-    , precio_unit NUMBER(10) NOT NULL 
+      codigo_proveedor VARCHAR2(15) NOT NULL  
+    , codigo_vino VARCHAR2(10) NOT NULL
+    , fecha DATE NOT NULL
+    , cantidad NUMBER(10) NOT NULL  
     , FOREIGN KEY(codigo_vino) REFERENCES vino(codigo_vino)
-    , FOREIGN KEY(codigo_corr) REFERENCES cliente(codigo_corr)
+    , FOREIGN KEY(codigo_proveedor) REFERENCES proveedor(codigo_prov)
+    , CONSTRAINT COD_COMPRA_ID_PK PRIMARY KEY (codigo_vino, codigo_proveedor)
 );
+--INSERT INTO COMPRA VALUES( 'LR', 'LM', TO_DATE('21/06/2017','DD/MM/YYYY'), 2000);
+--que pasaria se carga un codigo que se corresponde con uno de los clientes o preveedores
+--que estan cargados en las otras tablas?
+DROP TABLE compra; 
 
 CREATE TABLE proveedor (
     codigo_prov VARCHAR2(2) NOT NULL 
     , razon_social VARCHAR2(20) NOT NULL
-    , cod_proveedor VARCHAR2(2) NOT NULL
-    , FOREIGN KEY(cod_proveedor) REFERENCES categoria_proveedor(codigo_cate_prov)
+    , calidad_proveedor VARCHAR2(2) NOT NULL
+    , FOREIGN KEY(calidad_proveedor) REFERENCES categoria_proveedor(codigo_cate_prov)
     , CONSTRAINT COD_PROV_ID_PK PRIMARY KEY (codigo_prov)
 );
 
