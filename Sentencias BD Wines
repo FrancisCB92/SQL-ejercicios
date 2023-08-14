@@ -1,3 +1,138 @@
+--3. Ejecutar una sentencia que muestre todos los campos de una tabla
+SELECT *
+  FROM vino;
+  
+--4. Ejecutar una sentencia que muestre 2 campos de otra tabla.
+SELECT fecha, cantidad
+  FROM pedido;
+
+--5. Ejecutar una sentencia que pueda multiplicar 2 campos de una tabla del modelo.
+SELECT precio_unit, cantidad, precio_unit*cantidad total_compra
+  FROM pedido;
+
+--6. Siguiendo con el punto 5 que calcule, además, un 35% del precio unitario.
+SELECT precio_unit, cantidad, precio_unit*cantidad total_compra, precio_unit*0.35 "35%"
+  FROM pedido;
+
+--7. Ejecutar una sentencia que ponga “alias” en los campos.
+SELECT codigo_vino 'Código del Vino', codigo_corr 'Cliente satisfecho'
+  FROM pedido;
+
+--8. Ejecutar una sentencia que concatene el valor de 2 campos de cualquier tabla.
+SELECT codigo_vino ||' - '|| descripcion AS 'Datos de los vinos'
+ FROM vino; 
+
+--9. Que cláusula usarías para eliminar los duplicados de valores que haya en un campo.
+SELECT DISTINCT codigo_cliente cliente 
+  FROM pedido;
+
+--10. Ejecuta una sentencia que filtre información por un campo que sea numérico.
+SELECT codigo_cliente, MAX(cantidad), MIN(cantidad)
+  FROM pedido
+  GROUP BY codigo_corr;
+
+--11. Ejecuta una sentencia que filtre información por un campo que sea carácter.
+SELECT INITCAP(descripcion) ||' ('|| anio_elaboracion ||')'
+  FROM vino;
+
+--12. Ejecuta una sentencia que utilice el operador BETWEEN.
+SELECT descripcion, anio_elaboracion 
+  FROM vino 
+  WHERE anio_elaboracion BETWEEN 1990 AND 2000
+  ORDER BY anio_elaboracion;
+
+--13. Ejecuta una sentencia que utilice el operador IN ...
+SELECT *
+  FROM pedido
+  WHERE codigo_vino IN ('AS', 'MM');
+
+--... y NOT IN.
+SELECT *
+  FROM pedido
+  WHERE pedido.cantidad > 110 AND codigo_vino NOT IN('AS', 'MM');
+
+--14. Ejecuta una sentencia que utilice el operador LIKE que utilice el carácter ‘%’.
+SELECT descripcion
+  FROM vino 
+  WHERE UPPER(descripcion) LIKE '%MALBEC%';
+
+--15. Ejecuta una sentencia que utilice el operador IS NULL / IS NOT NULL.
+
+
+--16. Ejecuta una sentencia que utilice la cláusula ORDER BY, ascendente, y otra descendente.
+
+--17. Ejecutar una sentencia que solicite un valor por pantalla.
+
+--18. Ejecutar una sentencia que utiliza la función NVL.
+
+--19. Ejecutar una sentencia que utiliza la función NVL2.
+
+--20. Ejecutar una sentencia que utiliza la función NULLIF.
+
+--21. Ejecutar una sentencia que utiliza la función COALESCE.22. Ejecutar una sentencia que utiliza la función CASE.
+
+--23. Ejecutar una sentencia que utiliza la función DECODE.
+
+--24. Ejecutar una sentencia que utiliza la función de Fila LOWER.
+
+--25. Ejecutar una sentencia que utiliza la función de Fila UPPER.
+
+--26. Ejecutar una sentencia que utiliza la función de Fila INITCAP.
+
+--27. Ejecutar una sentencia que utiliza la función de Fila CONCAT.
+
+--28. Ejecutar una sentencia que utiliza la función de Fila SUBSTR.
+
+--29. Ejecutar una sentencia que utiliza la función de Fila LENGTH.
+
+--30. Ejecutar una sentencia que utiliza la función de Fila INSTR.
+
+--31. Ejecutar una sentencia que utiliza la función de Fila LPAD.
+
+--32. Ejecutar una sentencia que utiliza la función de Fila TRIM, LTRIM y RTRIM.
+
+--33. Ejecutar una sentencia que utiliza la función de Fila REPLACE.
+
+--34. Ejecutar una sentencia que utiliza la función de Fila ROUND.
+
+--35. Ejecutar una sentencia que utiliza la función de Fila TRUNC.
+
+--36. Ejecutar una sentencia que utiliza la función de Fila MOD.
+
+--37. Ejecutar una sentencia que utiliza la función de Fecha MONTHS_BETWEEN.
+
+--38. Ejecutar una sentencia que utiliza la función de Fecha ADD_MONTHS.
+
+--39. Ejecutar una sentencia que utiliza la función de Fecha NEXT_DAY y LAST_DAY.
+
+--40. Ejecutar una sentencia que utiliza la función TO_DATE.
+
+--41. Ejecutar una sentencia que utiliza la función TO_CHAR.42. Ejecutar una sentencia que utiliza la función TO_NUMBER.
+
+--43. Ejecutar una sentencia que utilice la función de grupo SUM.
+
+--44. Ejecutar una sentencia que utiliza la función de grupo AVG.
+
+--45. Ejecutar una sentencia que utiliza la función de grupo MIN y MAX.
+
+--46. Ejecutar una sentencia que utiliza la función de grupo COUNT.
+
+--47. Ejecutar una sentencia que utiliza la función de grupo COUNT combinado con DISTINCT.
+
+--48. Ejecutar una sentencia que utiliza la cláusula HAVING.
+
+--49. Ejecutar una sentencia que haga un JOIN.
+
+--50. Ejecutar una sentencia que haga un LEFT OUTER JOIN.
+
+--51. Ejecutar una sentencia que haga un RIGHT OUTER JOIN.
+
+--52. Ejecutar una sentencia de INSERT.
+
+--53. Ejecutar una sentencia de DELETE.
+
+--54. Ejecutar una sentencia de UPDATE.
+
 CREATE TABLE categoria (
      codigo_categ VARCHAR2(10) NOT NULL
     , descripcion VARCHAR2(100) NOT NULL
@@ -22,15 +157,26 @@ CREATE TABLE vino (
 );
 
 CREATE TABLE cliente (
-     codigo_corr VARCHAR2(10) NOT NULL 
+     codigo_cliente VARCHAR2(10) NOT NULL 
     , nom_razon VARCHAR2(50) NOT NULL 
     , telefono VARCHAR2(15) NOT NULL 
     , email VARCHAR2(25) NOT NULL 
     , tarjeta VARCHAR2(25) NOT NULL 
-    , CONSTRAINT COD_CORR_ID_PK PRIMARY KEY (codigo_corr)
+    , CONSTRAINT COD_CORR_ID_PK PRIMARY KEY (codigo_cliente)
 );
 
 --desaparecio la definición de la tabla pedido: ver el Object Browser. 
+CREATE TABLE pedido(
+    codigo_vino VARCHAR2(10) NOT NULL, 
+	codigo_cliente VARCHAR2(15) NOT NULL, 
+	fecha DATE NOT NULL, 
+	cantidad NUMBER(10,0) NOT NULL, 
+	precio_unit NUMBER(10,0) NOT NULL,
+    FOREIGN KEY(codigo_vino) REFERENCES vino(codigo_vino),
+    FOREIGN KEY(codigo_cliente) REFERENCES cliente(codigo_cliente),
+    CONSTRAINT COD_PEDIDO_ID_PK PRIMARY KEY (codigo_vino, codigo_cliente)
+   );
+
 
 CREATE TABLE compra (
       codigo_proveedor VARCHAR2(15) NOT NULL  
@@ -41,10 +187,13 @@ CREATE TABLE compra (
     , FOREIGN KEY(codigo_proveedor) REFERENCES proveedor(codigo_prov)
     , CONSTRAINT COD_COMPRA_ID_PK PRIMARY KEY (codigo_vino, codigo_proveedor)
 );
---INSERT INTO COMPRA VALUES( 'LR', 'LM', TO_DATE('21/06/2017','DD/MM/YYYY'), 2000);
---que pasaria se carga un codigo que se corresponde con uno de los clientes o preveedores
---que estan cargados en las otras tablas?
-DROP TABLE compra; 
+
+/*
+INSERT INTO COMPRA VALUES( 'LR', 'LM', TO_DATE('21/06/2017','DD/MM/YYYY'), 2000);
+que pasaria se carga un codigo que NO se corresponde con uno de los clientes o preveedores
+que estan cargados en las otras tablas? arroja el siguente error ORA-02291: integrity constraint (WKSP_DBCURSOUTN.SYS_C00144396938) violated - parent key not found
+ORA-06512: at "SYS.DBMS_SQL", line 1721 
+*/
 
 CREATE TABLE proveedor (
     codigo_prov VARCHAR2(2) NOT NULL 
@@ -63,8 +212,6 @@ CREATE TABLE categoria_proveedor (
     ventas NUMBER(20) NULL,
     CONSTRAINT COD_CATE_PROV_PK PRIMARY KEY (codigo_cate_prov)
 );
-
-DROP TABLE categoria_proveedor;
 
 INSERT INTO CATEGORIA VALUES ('TIN','TINTOS');
 INSERT INTO CATEGORIA VALUES ('BLA','BLANCOS');
@@ -112,3 +259,5 @@ INSERT INTO COMPRA VALUES( 'MO', 'GL', TO_DATE('21/09/2017','DD/MM/YYYY'), 1500)
 INSERT INTO COMPRA VALUES( 'MO', 'TR', TO_DATE('21/09/2017','DD/MM/YYYY'), 1500);
 INSERT INTO COMPRA VALUES( 'RO', 'GL', TO_DATE('21/05/2017','DD/MM/YYYY'), 1000);
 INSERT INTO COMPRA VALUES( 'RO', 'TR', TO_DATE('21/05/2017','DD/MM/YYYY'),  800);
+
+
