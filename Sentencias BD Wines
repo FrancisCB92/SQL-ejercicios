@@ -165,7 +165,6 @@ CREATE TABLE cliente (
     , CONSTRAINT COD_CORR_ID_PK PRIMARY KEY (codigo_cliente)
 );
 
---desaparecio la definición de la tabla pedido: ver el Object Browser. 
 CREATE TABLE pedido(
     codigo_vino VARCHAR2(10) NOT NULL, 
 	codigo_cliente VARCHAR2(15) NOT NULL, 
@@ -187,13 +186,6 @@ CREATE TABLE compra (
     , FOREIGN KEY(codigo_proveedor) REFERENCES proveedor(codigo_prov)
     , CONSTRAINT COD_COMPRA_ID_PK PRIMARY KEY (codigo_vino, codigo_proveedor)
 );
-
-/*
-INSERT INTO COMPRA VALUES( 'LR', 'LM', TO_DATE('21/06/2017','DD/MM/YYYY'), 2000);
-que pasaria se carga un codigo que NO se corresponde con uno de los clientes o preveedores
-que estan cargados en las otras tablas? arroja el siguente error ORA-02291: integrity constraint (WKSP_DBCURSOUTN.SYS_C00144396938) violated - parent key not found
-ORA-06512: at "SYS.DBMS_SQL", line 1721 
-*/
 
 CREATE TABLE proveedor (
     codigo_prov VARCHAR2(2) NOT NULL 
